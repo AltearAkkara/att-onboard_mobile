@@ -1,0 +1,1 @@
+include ':app', ':QRCoderReader-Service', ':google-play-services_lib', ':app-client-allthaitaxi', 'QRCode-Front', ':app:libraries:qrcodereaderview', 'library-qrcode-front', ':Component-ViewPagerIndicator'

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_bg">#ffcccccc</color>
+    <color name="frame_bg">#ff999999</color>
+    <color name="dialog_bg">#FFD7D7D7</color>
+    <color name="dialog_bg_pressed">#ffc6c6c6</color>
+
+    <color name="btn_orange_bg">#ffff9900</color>
+    <color name="btn_orange_bg_active">#fffbba58</color>
+
+    <color name="btn_blue_bg">#ff073f96</color>
+    <color name="btn_blue_bg_active">#ff0a60e6</color>
+
+    <color name="btn_login_bg">#7f0065bb</color>
+    <color name="btn_login_bg_active">#7f01569e</color>
+
+    <color name="btn_gray_bg">#ff707070</color>
+    <color name="btn_gray_bg_active">#ff838383</color>
+
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="red">#FF0000</color>
+    <color name="light_gray">#ffcccccc</color>
+    <color name="dark_gray">#ff999999</color>
+
+    <color name="blue">#ff073f96</color>
+    <color name="green">#00FF00</color>
+    <color name="orange">#FFFEC110</color>
+
+    <color name="list_bg">#fff6e8e7</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_transparent_100">#64000000</color>
+    <color name="black_transparent_200">#C8000000</color>
+    <color name="black_transparent_200_pressed">#C85c5c5c</color>
+
+    <color name="white_transparent_100">#64ffffff</color>
+    <color name="white_transparent_128">#80ffffff</color>
+
+</resources>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_bg"
+        android:id="@+id/ScreenNotification">
+
+
+
+        <LinearLayout
+            android:id="@+id/notification_header_frame"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:src="@drawable/popup_carlogo"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/imageView6" />
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/notification_title"
+                android:text="@string/notification_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Title"
+                android:layout_marginBottom="5dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/light_gray"
+                android:layout_marginLeft="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+            <LinearLayout
+                android:id="@+id/icon_layout"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_alignTop="@+id/imageView6"
+                android:layout_toEndOf="@+id/imageView6"
+                android:layout_marginStart="53dp">
+
+
+                <ImageView
+
+                    android:id="@+id/noti_reserved"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/icon_job_reserved"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/noti_app"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/icon_job_app"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+
+                <ImageView
+                    android:id="@+id/noti_visa"
+                    android:layout_width="200dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/icon_visa"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/notification_btn_ok"
+            android:text="@string/btn_roger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_blue"
+            style="@style/TextDrawer.Widget.HomeStatusbar_BTN_Alert"
+            />
+
+        <LinearLayout
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_below="@id/notification_header_frame"
+            android:layout_above="@id/notification_btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/notification_date"
+                android:text="@string/notification_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textColor="@color/dark_gray"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                />
+
+            <TextView
+                android:paddingTop="4dp"
+                android:id="@+id/notification_passenger_name"
+                android:text="@string/notification_passenger_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_2"
+                />
+
+            <TextView
+                android:paddingTop="4dp"
+                android:id="@+id/notification_pick"
+                android:text="@string/notification_pick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_2"
+                />
+
+            <TextView
+                android:paddingTop="4dp"
+                android:id="@+id/notification_destination"
+                android:text="@string/notification_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_2"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_version"
+            android:id="@+id/textView13"
+            android:layout_alignParentEnd="true"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#FFFFFF"
+	android:keepScreenOn="true"
+	>
+	
+	<ImageView
+		android:id="@+id/qrcode_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+	/>
+
+</RelativeLayout><!-- From: file:/D:/Android/AndroidStudioProjects/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/res/layout/qrcodewriter.xml --><!-- From: file:/D:/Android/AndroidStudioProjects/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/build/intermediates/bundles/debug/res/layout/qrcodewriter.xml -->

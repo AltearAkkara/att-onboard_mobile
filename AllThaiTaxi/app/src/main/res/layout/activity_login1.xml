@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        >
+
+        <TextView
+            android:paddingTop="16dp"
+            android:id="@+id/login_title"
+            android:text="@string/login_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextDrawer.Widget.LoginTitle"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/login_logo"
+            android:src="@drawable/splash_nca_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:paddingBottom="20dp"
+            android:id="@+id/login_desc"
+            android:text="@string/login_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/login_logo"
+            style="@style/TextDrawer.Widget.LoginDescription"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:padding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/login_title"
+            android:layout_above="@id/login_desc"
+            >
+
+            <TextView
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingLeft="60dp"
+                android:paddingRight="60dp"
+                android:id="@+id/login_btn_login"
+                android:text="@string/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_login"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                style="@style/TextDrawer.Widget.LoginButton"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/relativeLayout2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/login_shadow"
+                    android:src="@drawable/login_carlogo_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-15dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:src="@drawable/login_carlogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView"
+                    android:layout_above="@+id/login_shadow"
+                    android:layout_alignStart="@+id/login_shadow"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Version 3.2"
+                    android:id="@+id/textView3"
+                    android:textSize="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="50dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Large Text"
+                    android:id="@+id/textView4"
+                    android:textColor="#ffff0014"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_alignBottom="@+id/imageView"
+                    android:layout_alignStart="@+id/textView3"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Large Text"
+                    android:id="@+id/textView5"
+                    android:textColor="#ffff0014"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/login_shadow"
+                    android:layout_alignStart="@+id/textView4"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout3"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/login_logo"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="Internet"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_network_connected" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="Internet"
+                android:id="@+id/imageView3"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_network_unplug" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout6"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/linearLayout3"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="COM"
+                android:id="@+id/imageView4"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_system_run" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="COM"
+                android:id="@+id/imageView5"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_system_down" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout7"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/linearLayout3">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="COM"
+                android:id="@+id/cam_on"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_camera_online"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="COM"
+                android:id="@+id/cam_off"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_camera_offline"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/login_loading_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/black_transparent_200"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:paddingTop="10dp"
+            android:text="@string/loading_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            style="@style/TextDrawer.Widget.LoadingStyle"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/login_qr_code_frame"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/dialog_bg"
+        android:visibility="gone"
+        >
+
+        <com.dlazaro66.qrcodereaderview.QRCodeReaderView
+            android:id="@+id/qrCodeReaderView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/login_downloading_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/black_transparent_200"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:id="@+id/login_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:progress="0"
+            android:max="100"
+            android:visibility="gone"
+            />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:paddingTop="10dp"
+            android:text="@string/loading_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            style="@style/TextDrawer.Widget.LoadingStyle"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

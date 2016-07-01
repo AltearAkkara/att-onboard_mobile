@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AllThaiTaxi.iml" filepath="$PROJECT_DIR$/AllThaiTaxi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Component-ViewPagerIndicator/Component-ViewPagerIndicator.iml" filepath="$PROJECT_DIR$/Component-ViewPagerIndicator/Component-ViewPagerIndicator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QRCode-Front/QRCode-Front.iml" filepath="$PROJECT_DIR$/QRCode-Front/QRCode-Front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QRCoderReader-Service/QRCoderReader-Service.iml" filepath="$PROJECT_DIR$/QRCoderReader-Service/QRCoderReader-Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-client-allthaitaxi/app-client-allthaitaxi.iml" filepath="$PROJECT_DIR$/app-client-allthaitaxi/app-client-allthaitaxi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/libraries.iml" filepath="$PROJECT_DIR$/app/libraries/libraries.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-qrcode-front/library-qrcode-front.iml" filepath="$PROJECT_DIR$/library-qrcode-front/library-qrcode-front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/qrcodereaderview/qrcodereaderview.iml" filepath="$PROJECT_DIR$/app/libraries/qrcodereaderview/qrcodereaderview.iml" />
+    </modules>
+  </component>
+</project>

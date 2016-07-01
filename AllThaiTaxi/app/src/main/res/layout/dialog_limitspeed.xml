@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_bg"
+        >
+
+        <LinearLayout
+            android:id="@+id/limitspeed_header_frame"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:src="@drawable/popup_icon_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/limitspeed_title"
+                android:text="@string/limitspeed_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Title"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/light_gray"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_below="@id/limitspeed_header_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/limitspeed_drivername"
+                android:text="@string/limitspeed_drivername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_2"
+                />
+
+            <TextView
+                android:paddingTop="16dp"
+                android:text="@string/limitspeed_description_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_3"
+                />
+
+            <TextView
+                android:text="@string/limitspeed_description_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_3"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_bg"
+        >
+
+        <LinearLayout
+            android:id="@+id/carwash_header_frame"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:src="@drawable/car_wash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/carwash_title"
+                android:text="@string/carwash_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Title"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/light_gray"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingBottom="8dp"
+            android:id="@+id/carwash_bottom_frame"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:paddingTop="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/carwash_btn_ok"
+                android:text="@string/btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/btn_blue"
+                style="@style/TextDrawer.Widget.HomeStatusbar_BTN_Alert"
+                />
+
+            <TextView
+                android:paddingTop="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/carwash_navigate"
+                android:text="@string/btn_navigate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/btn_blue"
+                style="@style/TextDrawer.Widget.HomeStatusbar_BTN_Alert"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_below="@id/carwash_header_frame"
+            android:layout_above="@id/carwash_bottom_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            >
+
+            <TextView
+                android:id="@+id/carwash_desc"
+                android:text="@string/carwash_desc_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_3"
+                />
+
+            <TextView
+                android:text="@string/carwash_desc_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_3"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

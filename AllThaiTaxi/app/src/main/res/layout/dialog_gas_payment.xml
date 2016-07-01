@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_bg"
+        >
+
+        <LinearLayout
+            android:id="@+id/gaspayment_header_frame"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:src="@drawable/popup_icon_gas"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/gaspayment_title"
+                android:text="@string/gasstation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Title"
+                />
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingRight="16dp"
+                android:id="@+id/gaspayment_date"
+                android:text="@string/notification_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                android:layout_gravity="right"
+                android:gravity="right" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/light_gray"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/gaspayment_btn_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            >
+
+            <TextView
+                android:paddingTop="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/gaspayment_btn_ok"
+                android:text="@string/btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/btn_blue"
+                style="@style/TextDrawer.Widget.HomeStatusbar_BTN_Alert"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_below="@id/gaspayment_header_frame"
+            android:layout_above="@id/gaspayment_btn_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                >
+
+                <TextView
+                    android:text="@string/payment_desc_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"/>
+
+                <EditText
+                    android:id="@+id/gaspayment_edit_gas"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+                <TextView
+                    android:text="@string/payment_desc_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                >
+
+                <TextView
+                    android:text="@string/gaspayment_desc_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+                <EditText
+                    android:id="@+id/gaspayment_edit_amount"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+                <TextView
+                    android:text="@string/payment_desc_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                >
+
+                <TextView
+                    android:text="เลขกิโลเมตร :"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+                <EditText
+                    android:id="@+id/input_km_gas"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+                <TextView
+                    android:text="กิโลเมตร"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

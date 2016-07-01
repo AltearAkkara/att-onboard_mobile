@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_bg"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/incident_header_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:src="@drawable/popup_icon_emergency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:paddingTop="8dp"
+                android:text="@string/incident_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Title"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/light_gray"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_below="@id/incident_header_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/incident_date"
+                android:text="@string/notification_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textColor="@color/dark_gray"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                />
+
+            <TextView
+                android:paddingBottom="8dp"
+                android:text="@string/incident_desc_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_1"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/incident_btn_accident"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:src="@drawable/popup_icon_incident"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:paddingTop="4dp"
+                        android:text="@string/incident_desc_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_4"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/incident_btn_car"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:src="@drawable/popup_icon_service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:paddingTop="4dp"
+                        android:text="@string/incident_desc_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_4"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/incident_btn_wheel"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:src="@drawable/popup_icon_whell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:paddingTop="4dp"
+                        android:text="@string/incident_desc_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_4"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/incident_btn_incident"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:src="@drawable/popup_icon_emer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:paddingTop="4dp"
+                        android:text="@string/incident_desc_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        style="@style/TextDrawer.Widget.HomeStatusbar_Notification_Desc_4"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/incident_btn_close"
+        android:padding="16dp"
+        android:text="@string/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        style="@style/TextDrawer.Widget.DialogBtnX"
+        />
+
+</RelativeLayout>

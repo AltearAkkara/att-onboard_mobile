@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.truelife.mobile.android.qrcode"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+	
+	<uses-permission android:name="android.permission.CAMERA"/>
+  	<uses-permission android:name="android.permission.READ_CONTACTS"/>
+  	<uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+  	<uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
+  	<uses-permission android:name="android.permission.VIBRATE"/>
+  	<uses-permission android:name="android.permission.FLASHLIGHT"/>
+	
+</manifest>

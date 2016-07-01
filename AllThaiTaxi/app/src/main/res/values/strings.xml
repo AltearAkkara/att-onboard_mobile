@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ATT Vehicle</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_version">4.6</string>
+    <string name="download_path">att_vehicle</string>
+    <string name="app_file_name">app_onboard.apk</string>
+
+    <string name="login_title">กรุณาเข้าระบบผ่าน QR Code</string>
+    <string name="login_desc">กดปุ่ม "เข้าสู่ระบบ" เพื่อเริ่มสแกน QR Code</string>
+    <string name="home_title_1">พนักงาน : </string>
+    <string name="home_title_2">วันที่ : </string>
+    <string name="home_title_3">สถานะ : </string>
+    <string name="home_title_4">ผู้โดยสาร : </string>
+
+    <string name="home_statusbar_01">ตอบรับ</string>
+    <string name="home_statusbar_02">ถึงจุดรับ</string>
+    <string name="home_statusbar_03">ถึงที่หมาย</string>
+    <string name="home_statusbar_04">สรุปค่าใช้จ่าย</string>
+
+    <string name="btn_ok">ตกลง</string>
+    <string name="btn_roger">รับทราบ</string>
+    <string name="btn_cancel">ยกเลิก</string>
+    <string name="btn_navigate">Navigate</string>
+    <string name="btn_money">เงินสด</string>
+    <string name="btn_creditcard">Credit card \non application</string>
+    <string name="btn_login">เข้าสู่ระบบด้วย QR Code</string>
+    <string name="btn_login_user">เข้าสู่ระบบด้วยรหัสพนักงาน</string>
+    <string name="btn_close">X</string>
+    <string name="btn_work">ทำงาน</string>
+
+    <string name="notification_title">แจ้งรับผู้โดยสาร</string>
+    <string name="notification_date">วันที่</string>
+    <string name="notification_passenger_name">ชื่อผู้โดยสาร : </string>
+    <string name="notification_destination">ปลายทาง : </string>
+    <string name="notification_pick">เรียกแท็กซี่ไปรับที่ : </string>
+
+    <string name="limitspeed_title">แจ้งความเร็วเกินพิกัด</string>
+    <string name="limitspeed_drivername">พนักงาน</string>
+    <string name="limitspeed_description_1">ท่านกำลังขับรถเกินความเร็วที่บริษัทกำหนด กรุณาลดความเร็ว</string>
+    <string name="limitspeed_description_2">เพื่อความปลอดภัยของท่าน และผู้โดยสาร</string>
+
+    <string name="payment_title">สรุปค่าเดินทาง</string>
+    <string name="payment_desc_1">ระยะเวลา </string>
+    <string name="payment_desc_2">ระยะทาง </string>
+    <string name="payment_desc_3">จำนวนเงินจากมิเตอร์ </string>
+    <string name="payment_desc_4">บาท</string>
+    <string name="payment_desc_5">ค่าทางด่วน </string>
+    <string name="payment_desc_6">ค่าบริการจองรถ </string>
+    <string name="payment_desc_7">จำนวนน้ำมัน </string>
+    <string name="payment_desc_8">ลิตร</string>
+    <string name="payment_desc_9">จำนวนเงินก่อนลด </string>
+    <string name="payment_desc_10">บาท ลด :</string>
+    <string name="payment_desc_11">บาท</string>
+
+    <string name="gaspayment_title">แจ้งยอดการเติมน้ำมัน</string>
+    <string name="gaspayment_desc_1">จำนวนเงิน : </string>
+
+    <string name="gasstation_title">แจ้งการเติมน้ำมัน</string>
+    <string name="gasstation_desc1">กรุณานำรถไปยังปั้มน้ำมันใกล้เคียง</string>
+    <string name="gasstation_desc2">หรือสามารถเลือก Navigate เพื่อนำทางไปยังปั้มน้ำมันได้</string>
+
+    <string name="endjob_title">แจ้งเปลี่ยนกะการทำงาน</string>
+    <string name="endjob_desc_1">กรุณานำรถไปจุดจอดรถ ณ จุดจอดใกล้เคียง</string>
+    <string name="endjob_desc_2">หรือสามารถเลือก Navigate เพื่อนำทางไปยังจุดจอดรถ</string>
+
+    <string name="hub_title">แจ้งนำรถไปยังจุดจอดรถ</string>
+
+    <string name="checkup_title">แจ้งถึงกำหนดตรวจเช็คสภาพรถ</string>
+    <string name="checkup_desc_1">ถึงกำหนดการตรวจเช็คสภาพรถแล้ว</string>
+    <string name="checkup_desc_2">กรุณานำรถเข้าศูนย์</string>
+
+    <string name="carwash_title">แจ้งถึงกำหนดการล้างรถ</string>
+    <string name="carwash_desc_1">ถึงกำหนดการล้างรถระดับ 1 แล้ว</string>
+    <string name="carwash_desc_1_2">ถึงกำหนดการล้างรถระดับ 2 แล้ว</string>
+    <string name="carwash_desc_1_3">ถึงกำหนดการล้างรถระดับ 3 แล้ว</string>
+    <string name="carwash_desc_2">กรุณานำรถเข้าไปยังจุดให้บริการ</string>
+
+    <string name="incident_title">แจ้งเหตุขัดข้อง</string>
+    <string name="incident_desc_1">กรุณาเลือกเหตุฉุกเฉิน</string>
+    <string name="incident_desc_2">อุบัติเหตุ</string>
+    <string name="incident_desc_3">รถเสีย</string>
+    <string name="incident_desc_4">ยาง</string>
+    <string name="incident_desc_5">เหตุฉุกเฉิน</string>
+    <string name="incident_desc_6">พักรถ</string>
+
+    <string name="outofservice_title">หยุดให้บริการ</string>
+    <string name="outofservice_desc_2">คุณได้ทำการหยุดให้บริการ</string>
+    <string name="outofservice_desc_3">กรุณาติดต่อศูนย์เพื่อดำเนินการต่อ</string>
+
+    <string name="profiledetail_desc_1">จุดรับ : </string>
+    <string name="profiledetail_desc_2">เวลา </string>
+    <string name="profiledetail_desc_3">จุดส่ง : </string>
+    <string name="profiledetail_desc_4">เวลา </string>
+    <string name="profiledetail_desc_5">ค่าโดยสาร : </string>
+    <string name="profiledetail_desc_6">จ่ายโดย : </string>
+
+    <string name="breaking_title">หยุดพัก</string>
+    <string name="breaking_desc">พนักงานได้ทำการหยุดพักอยู่ \nให้กดปุ่ม \"ทำงาน\" เพื่อรับงานต่อ</string>
+
+    <string name="enable_gps">Enable GPS</string>
+    <string name="enable_gps_dialog">GPS provider not enabled. Would you like to enable it?</string>
+    <string name="not_support_gps">GPS provider not supported</string>
+    <string name="not_support_network">Network provider not supported</string>
+    <string name="use_fine_provider">Fine-grain provider</string>
+    <string name="use_both_providers">Both providers</string>
+
+    <string name="loading_01">Logging in...</string>
+    <string name="loading_02">Loading...</string>
+    <string name="loading_03">กำลังปรับปรุงข้อมูลโปรแกรม...</string>
+
+    <string name="status_001">พร้อมปฏิบัติงาน</string>
+    <string name="status_002">จองรถ</string>
+    <string name="status_003">ถึงจุดรับ</string>
+    <string name="status_004">ถึงที่หมาย</string>
+    <string name="status_005">ไปสถานีน้ำมัน</string>
+    <string name="status_006">ไปจุดจอดรถ</string>
+
+    <string name="job_type_2">ไปจุดจอดรถ</string>
+    <string name="job_type_3">ไปเปลี่ยนกะทำงาน</string>
+    <string name="job_type_4">ไปศูนย์นครชัยแอร์</string>
+    <string name="job_type_5">ไปศูนย์โตโยต้า</string>
+    <string name="job_type_6">ไปล้างรถระดับ 1</string>
+    <string name="job_type_7">ไปล้างรถระดับ 2</string>
+    <string name="job_type_8">ไปล้างรถระดับ 3</string>
+    <string name="job_type_9">ไปเติมน้ำมัน</string>
+
+
+    <string name="login_km">เลขกิโลเมตร : </string>
+    <string name="login_unit">กิโลเมตร</string>
+    <string name="logout_msg">คุณต้องการจะออกจากระบบใช่หรือไม่?</string>
+    <string name="login_msg">กรุณาใส่เลขกิโลเมตรก่อนเข้าทำงาน</string>
+    <string name="alert_input">กรุณากรอกข้อมูลให้ครบ</string>
+    <string name="alert_input1">ระยะเวลา และ ระยะทาง ต้องมากกว่า 0.1 , จำนวนเงินต้องมากกว่า 35</string>
+    <string name="install">กดติดตั้ง เพื่อติดตั้งโปรแกรม</string>
+    <string name="progress">กรุณารอจนกว่าจะดาวน์โหลดเสร็จ</string>
+    <string name="alert_KM">กรุณาใส่เลขกิโลเมตร</string>
+    <string name="alert_KM_MORE">เลขกิโลเมตรผิดปกติ ยืนยันจะส่งข้อมูลหรือไม่ ?</string>
+    <string name="alert_Up">กำลังอัพเดตโปรแกรม</string>
+    <string name="credit_name">ยืนยันการชำระเงินด้วยบัตรเครดิต</string>
+
+
+    <string name="error_02">ไม่สามารถเข้าสู่ระบบได้ กรุณาติดต่อเจ้าหน้าที่</string>
+    <string name="error_01">ไม่สามารถทำการดาวน์โหลดไฟล์ APK ล่าสุดได้ กรุณาลองใหม่อีกครั้งค่ะ</string>
+    <string name="check_update">ขณะนี้มี Application เวอร์ชั่นใหม่ กรุณากด Update</string>
+    <string name="check_con">ผ่าน Play Store</string>
+    <string name="btn_check">ไปยัง Play Store</string>
+
+    <string name="confirm">ตกลง</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="confirm_gas">ยืนยันการจ่ายค่าน้ำมัน</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps_activity1">Map</string>
+
+</resources>

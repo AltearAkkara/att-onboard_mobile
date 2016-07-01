@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Component-ViewPagerIndicator" />
+            <option value="$PROJECT_DIR$/QRCode-Front" />
+            <option value="$PROJECT_DIR$/QRCoderReader-Service" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app-client-allthaitaxi" />
+            <option value="$PROJECT_DIR$/app/libraries" />
+            <option value="$PROJECT_DIR$/app/libraries/qrcodereaderview" />
+            <option value="$PROJECT_DIR$/google-play-services_lib" />
+            <option value="$PROJECT_DIR$/library-qrcode-front" />
+          </set>
+        </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Component-ViewPagerIndicator" />
+            <option value="$PROJECT_DIR$/QRCode-Front" />
+            <option value="$PROJECT_DIR$/QRCoderReader-Service" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app-client-allthaitaxi" />
+            <option value="$PROJECT_DIR$/app/libraries" />
+            <option value="$PROJECT_DIR$/app/libraries/qrcodereaderview" />
+            <option value="$PROJECT_DIR$/google-play-services_lib" />
+            <option value="$PROJECT_DIR$/library-qrcode-front" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
