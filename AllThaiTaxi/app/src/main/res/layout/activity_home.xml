@@ -473,13 +473,6 @@
                 android:src="@drawable/icon_open_meter"
                 android:id="@+id/btn_Start_Mter" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_close_meter"
-                android:id="@+id/btn_Stop_Meter"
-                android:clickable="true" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -507,13 +500,6 @@
                     android:id="@+id/btn_menu"
                     android:src="@drawable/icon_main_menu_non_active"
                     />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn_menu_close"
-                    android:src="@drawable/icon_main_menu_active"
-                   />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -557,13 +543,6 @@
 
                 <ImageView
                     android:layout_marginTop="4dp"
-                    android:id="@+id/btn_traffic_non"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_traffic_non_active" />
-
-                <ImageView
-                    android:layout_marginTop="4dp"
                     android:id="@+id/btn_traffic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -583,15 +562,6 @@
                     android:layout_gravity="center"
                     android:src="@drawable/icon_system_run"/>
 
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="COM"
-                    android:id="@+id/networkClose"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icon_system_down"/>
 
             </LinearLayout>
 

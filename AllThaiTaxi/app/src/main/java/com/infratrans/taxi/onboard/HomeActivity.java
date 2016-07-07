@@ -1,5 +1,57 @@
 package com.infratrans.taxi.onboard;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.hardware.GeomagneticField;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -16,97 +68,22 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.graphics.Typeface;
-import android.hardware.GeomagneticField;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-//import android.webkit.WebView;
-//import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
-import android.view.View.MeasureSpec;
-import android.view.View.OnClickListener;
-
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -114,25 +91,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import com.infratrans.taxi.onboard.markerclusterer.MarkerCluster;
-import com.infratrans.taxi.onboard.markerclusterer.MarkerClusterer;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.infratrans.taxi.onboard.json.JSONParser;
+import com.infratrans.taxi.onboard.markerclusterer.MarkerCluster;
+import com.infratrans.taxi.onboard.markerclusterer.MarkerClusterer;
 import com.infratrans.taxi.onboard.services.GMapV2Direction;
 import com.infratrans.taxi.onboard.services.GoogleDirectionStep;
 import com.infratrans.taxi.onboard.services.JobTracking;
@@ -166,8 +130,13 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -213,7 +182,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private int hours = 1;
     private int hoursshifttime = 1;
-    private String loginTime;
+    //    private String loginTime;
     private GoogleMap mapview;
     private LatLng myLocation;
     private Marker myLocation_maker;
@@ -248,7 +217,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private boolean isNewlyOpened = true;
     private ArrayList<GoogleDirectionStep> googleDirectionStepArrayList = null;
     private TextView tv_naviText;
-//    private WebView webView;
+    private WebView webView;
 
     @Override
     public void onAnimationEnd(Animation animation) {
@@ -330,7 +299,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
                     }
 
-//                            aq.id(R.id.textView7).text(String.valueOf(intent.getStringExtra("debug"))+" , job_type: "+job_type);
+                    //aq.id(R.id.textView7).text(String.valueOf(intent.getStringExtra("debug"))+" , job_type: "+job_type);
                 }
             }
         }
@@ -429,6 +398,11 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 //            viewtrip.btn_payment_click("1");
 //        }
 
+//        if(timer_UpdateChart != null){
+//            timer_UpdateChart.cancel();
+//            timer_UpdateChart = null;
+//        }
+
         if(timer != null){
             timer.cancel();
             timer = null;
@@ -462,7 +436,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     @Override
     public void onBackPressed() {
-
         if (back_pressed + 2000 > System.currentTimeMillis())
             HomeActivity.this.finish();
         else
@@ -533,7 +506,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         startTimerNetwork();
         startTimer();
         startTimerMeter();
-//        startTimer_UpdateChart();
+        startTimer_UpdateChart();
         registerReceiver(broadcastReceiver, filter);
         startService(intent_service);
 //        add check job
@@ -592,33 +565,33 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     }
 
     public void initializeTimerTask_UpdateChart() {
-//        timerTask_UpdateChart = new TimerTask() {
-//            public void run() {
-//
-//                handler.post(new Runnable() {
-//                    public void run() {
-//                        //        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
-////                , AppSharedPreferences.getInstance(HomeActivity.this).getStateStandby());
-//                        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
-//                                , 10 * 3600);
-//                        createHorizontalChartBaht_DAY(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay(), "บาท/วัน (1500)");
-////        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtHour(), "BAHT/HRs (150)");
-//                        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()/hoursshifttime, "บาท/ชม. ("+150+")");
-//
-//
-//                        if(AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM() != 0 &&AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm()>=AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()) {
-//                            createHorizontalChartBaht_KM(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()
-//                                    / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "บาท/กิโลเมตร");
-////            createHorizontalChartBaht_KM(1, 446 / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "BAHT/KMs");
-//
-//                        }
-//                        else{
-//                            createHorizontalChartBaht_KM(1,0,"บาท/กิโลเมตร");
-//                        }
-//                    }
-//                });
-//            }
-//        };
+        timerTask_UpdateChart = new TimerTask() {
+            public void run() {
+
+                handler.post(new Runnable() {
+                    public void run() {
+                        //        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
+//                , AppSharedPreferences.getInstance(HomeActivity.this).getStateStandby());
+                        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
+                                , 10 * 3600);
+                        createHorizontalChartBaht_DAY(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay(), "บาท/วัน (1500)");
+//        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtHour(), "BAHT/HRs (150)");
+                        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()/hoursshifttime, "บาท/ชม. ("+150+")");
+
+
+                        if(AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM() != 0 &&AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm()>=AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()) {
+                            createHorizontalChartBaht_KM(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()
+                                    / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "บาท/กิโลเมตร");
+//            createHorizontalChartBaht_KM(1, 446 / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "BAHT/KMs");
+
+                        }
+                        else{
+                            createHorizontalChartBaht_KM(1,0,"บาท/กิโลเมตร");
+                        }
+                    }
+                });
+            }
+        };
     }
 
 
@@ -760,7 +733,8 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
                                                 timerMeter.cancel();
                                                 timerMeter = null;
-                                                aq.id(R.id.btn_Start_Mter).visible();
+                                                aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
+                                                aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
                                                 aq.id(R.id.icon_thum).visible();
 
                                                 if (AppSharedPreferences.getInstance(HomeActivity.this).getJobType().equalsIgnoreCase("2")) {
@@ -848,20 +822,25 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                                     HashMap<String, Object> resultObj = (HashMap<String, Object>) json.convertJson2HashMap();
 
                                     if (String.valueOf(resultObj.get("code")).equalsIgnoreCase("200")) {
-                                        aq.id(R.id.networkClose).visibility(View.GONE);
+//                                        aq.id(R.id.networkClose).visibility(View.GONE);
                                         aq.id(R.id.networkOpen).visible();
+                                        aq.id(R.id.networkOpen).image(R.drawable.icon_system_run);
                                     } else {
-                                        aq.id(R.id.networkOpen).visibility(View.GONE);
-                                        aq.id(R.id.networkClose).visible();
+                                        aq.id(R.id.networkOpen).visibility(View.VISIBLE);
+//                                        aq.id(R.id.networkClose).visible();
+
+                                        aq.id(R.id.networkOpen).image(R.drawable.icon_system_down);
                                     }
 
                                 } catch (JSONException e) {
-                                    aq.id(R.id.networkOpen).visibility(View.GONE);
-                                    aq.id(R.id.networkClose).visible();
+                                    aq.id(R.id.networkOpen).visibility(View.VISIBLE);
+//                                    aq.id(R.id.networkClose).visible();
+                                    aq.id(R.id.networkOpen).image(R.drawable.icon_system_down);
                                     e.printStackTrace();
                                 } catch (RuntimeException e) {
-                                    aq.id(R.id.networkOpen).visibility(View.GONE);
-                                    aq.id(R.id.networkClose).visible();
+                                    aq.id(R.id.networkOpen).visibility(View.VISIBLE);
+//                                    aq.id(R.id.networkClose).visible();
+                                    aq.id(R.id.networkOpen).image(R.drawable.icon_system_down);
                                     e.printStackTrace();
                                 }
 
@@ -999,7 +978,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         if(!AppSharedPreferences.getInstance(HomeActivity.this).getStateKickTime().equalsIgnoreCase("")
                                 && !AppSharedPreferences.getInstance(HomeActivity.this).getStateKickTime().equalsIgnoreCase("null"))
                         {
-                             secondStr = AppSharedPreferences.getInstance(HomeActivity.this).getStateKickTime();
+                            secondStr = AppSharedPreferences.getInstance(HomeActivity.this).getStateKickTime();
                         }
                         else{
                             secondStr = "2020-02-11 13:00:00";
@@ -1029,8 +1008,12 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         }
 
 
-                        hours = Integer.parseInt(gethour);
-
+                        if(gethour != "" && gethour != null && gethour != "null") {
+                            hours = Integer.parseInt(gethour);
+                        }
+                        else{
+                            hours = 1;
+                        }
                         if(hours-AppSharedPreferences.getInstance(HomeActivity.this).getStateShiftStart() == 0){
                             hoursshifttime =1;
                         }
@@ -1048,15 +1031,11 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                             AppSharedPreferences.getInstance(HomeActivity.this).setStateStandby(AppSharedPreferences.getInstance(HomeActivity.this).getStateStandby()+1);
                         }
 
-                        count_hour++;
-                        if(count_hour >= 3600){
-                            count_hour = 0;
-                            AppSharedPreferences.getInstance(HomeActivity.this).removeStateBahtHour();
-                        }
-                        else{
-
-                        }
-
+//                        count_hour++;
+//                        if(count_hour >= 3600){
+//                            count_hour = 0;
+//                            AppSharedPreferences.getInstance(HomeActivity.this).removeStateBahtHour();
+//                        }
 
 
                     }
@@ -1166,7 +1145,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         String times = String.valueOf(hour);
         String jsonCluster = json+"_"+days+"_"+times+".json";
         //Toast.makeText(getApplicationContext(),jsonCluster.toString(), Toast.LENGTH_LONG).show();
-          //String jsonCluster = "http://taxiapi.itsconsultancy.co.th/onboard/mapDemand/point_2_15.json";
+        //String jsonCluster = "http://taxiapi.itsconsultancy.co.th/onboard/mapDemand/point_2_15.json";
         AQuery ajax = aq.ajax(jsonCluster, String.class, new AjaxCallback<String>() {
             @Override
             public void callback(String url, String data, AjaxStatus status) {
@@ -1197,7 +1176,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
                         LatLng markerPos = new LatLng(lat, lng);
                         if (percentage >= 0 && percentage <= 10) {
-                          MarkerOptions markerOptions = new MarkerOptions().position(
+                            MarkerOptions markerOptions = new MarkerOptions().position(
                                     markerPos).icon(BitmapDescriptorFactory.fromResource(R.drawable.per10)).visible(false);
                             Marker marker = getGoogleMap().addMarker(markerOptions);
                             //add to list
@@ -1281,8 +1260,9 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     }
 
                 } catch (JSONException e) {
-                    aq.id(R.id.networkOpen).visibility(View.GONE);
-                    aq.id(R.id.networkClose).visible();
+                    aq.id(R.id.networkOpen).visibility(View.VISIBLE);
+//                    aq.id(R.id.networkClose).visible();
+                    aq.id(R.id.networkOpen).image(R.drawable.icon_system_down);
                     e.printStackTrace();
                 }
 
@@ -1408,403 +1388,403 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         return bitmap;
     }
 
-//    private void setDataPie(int count, float[] range) {
-//
-//
-//
-//        ArrayList<com.github.mikephil.charting.data.Entry> yVals1 = new ArrayList<com.github.mikephil.charting.data.Entry>();
-//
-//        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-//        // xIndex (even if from different DataSets), since no values can be
-//        // drawn above each other.
-//        for (int i = 0; i < count + 1; i++) {
-//            yVals1.add(new com.github.mikephil.charting.data.Entry((float) range[i], i));
-//        }
-//
-//        ArrayList<String> xVals = new ArrayList<String>();
-//        xVals.add("JOB");
-//        xVals.add("STAND BY");
-//
-//        for (int i = 0; i < count + 1; i++)
-//            xVals.add(String.valueOf(i));
-//        PieDataSet dataSet = new PieDataSet(yVals1, "");
-//        dataSet.setSliceSpace(3f);
-//        dataSet.setSelectionShift(5f);
-//
-//        // add a lot of colors
-//
-//        ArrayList<Integer> colors = new ArrayList<Integer>();
-//
-//        int[] array = new int[2];
-//        array[1] = Color.rgb(255, 0, 0);
-//        array[0] = Color.rgb(0, 255, 0);
-//        for (int c : array)
-//            colors.add(c);
-//
-//
-//        dataSet.setColors(colors);
-//        //dataSet.setSelectionShift(0f);
-//
-//        PieData data = new PieData(xVals, dataSet);
-//        data.setValueFormatter(new PercentFormatter());
-//        data.setValueTextSize(11f);
-//        data.setValueTextColor(Color.BLACK);
-//        mChart.setData(data);
-//
-//        // undo all highlights
-//        mChart.highlightValues(null);
-//
-//        mChart.invalidate();
-//    }
-//
-//
-//    private void createPieChartJob_HR(int set ,float value, float value1)
-//    {
-//        mChart = (PieChart)findViewById(R.id.chart1);
-//        mChart.setUsePercentValues(true);
-//        mChart.setDescription("");
-//        mChart.setExtraOffsets(5, 10, 5, 5);
-//
-//
-//        mChart.setDrawHoleEnabled(true);
-//        mChart.setHoleColor(Color.WHITE);
-//
-//        mChart.setTransparentCircleColor(Color.WHITE);
-//        mChart.setTransparentCircleAlpha(110);
-//
-//        mChart.setHoleRadius(58f);
-//        mChart.setTransparentCircleRadius(61f);
-//
-//        mChart.setDrawCenterText(true);
-//
-//        mChart.setRotationAngle(0);
-//        // enable rotation of the chart by touch
-//        mChart.setRotationEnabled(true);
-//        mChart.setHighlightPerTapEnabled(true);
-//
-//        float[] valuearr = new float[2];
-//        valuearr[0] = value;
-//        valuearr[1]= value1;
-//        setDataPie(set, valuearr);
-//
-//        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-//        // mChart.spin(2000, 0, 360);
-//
-//        Legend l = mChart.getLegend();
-//        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(0f);
-//        l.setYOffset(0f);
-//    }
-//
-//    public void setDataRadarChart() {
-//
-//        float mult = 150;
-//        int cnt = 9;
-//
-//        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-//        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-//
-//        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-//        // xIndex (even if from different DataSets), since no values can be
-//        // drawn above each other.
-//        for (int i = 0; i < cnt; i++) {
-//            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
-//        }
-//
-//        for (int i = 0; i < cnt; i++) {
-//            yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
-//        }
-//
-//        ArrayList<String> xVals = new ArrayList<String>();
-//
-//        for (int i = 0; i < cnt; i++)
-//            xVals.add(String.valueOf(i));
-//
-//        RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
-//        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        set1.setDrawFilled(true);
-//        set1.setLineWidth(2f);
-//
-//        RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
-//        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
-//        set2.setFillColor(ColorTemplate.VORDIPLOM_COLORS[4]);
-//        set2.setDrawFilled(true);
-//        set2.setLineWidth(2f);
-//
-//        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
-//        sets.add(set1);
-//        sets.add(set2);
-//
-//        RadarData data = new RadarData(xVals, sets);
-//        data.setValueTextSize(8f);
-//        data.setDrawValues(false);
-//
-//        mChart1.setData(data);
-//
-//        mChart1.invalidate();
-//    }
-//    private void createRadarChart(){
-//        mChart1 = (RadarChart) findViewById(R.id.chart2);
-//        mChart1.setDescription("");
-//
-//        mChart1.setWebLineWidth(1.5f);
-//        mChart1.setWebLineWidthInner(0.75f);
-//        mChart1.setWebAlpha(100);
-//        setDataRadarChart();
-//
-//        mChart1.animateXY(
-//                1400, 1400,
-//                Easing.EasingOption.EaseInOutQuad,
-//                Easing.EasingOption.EaseInOutQuad);
-//
-//        XAxis xAxis = mChart1.getXAxis();
-//        xAxis.setTextSize(9f);
-//
-//        YAxis yAxis = mChart1.getYAxis();
-//        yAxis.setLabelCount(5, false);
-//        yAxis.setTextSize(9f);
-//        yAxis.setAxisMinValue(0f);
-//
-//        Legend l = mChart1.getLegend();
-//        l.setPosition(LegendPosition.RIGHT_OF_CHART);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(5f);
-//    }
-//
-//    private void createHorizontalChartBaht_HR(int set , float value,String Des){
-//        mChart2 = (HorizontalBarChart) findViewById(R.id.chart3);
-//        // mChart.setHighlightEnabled(false);
-//
-//        mChart2.setDrawBarShadow(false);
-//
-//        mChart2.setDrawValueAboveBar(true);
-//
-//        mChart2.setDescription("");
-//
-//        // if more than 60 entries are displayed in the chart, no values will be
-//        // drawn
-//        mChart2.setMaxVisibleValueCount(60);
-//
-//        // scaling can now only be done on x- and y-axis separately
-//        mChart2.setPinchZoom(false);
-//
-//        // draw shadows for each bar that show the maximum value
-//        // mChart.setDrawBarShadow(true);
-//
-//        // mChart.setDrawXLabels(false);
-//
-//        mChart2.setDrawGridBackground(false);
-//
-//        // mChart.setDrawYLabels(false);
-//
-//
-//        XAxis xl = mChart2.getXAxis();
-//        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xl.setDrawAxisLine(true);
-//        xl.setDrawGridLines(true);
-//        xl.setGridLineWidth(0.3f);
-//
-//        YAxis setmax = mChart2.getAxisLeft();
-//        setmax.setAxisMaxValue(300);
-//        YAxis setmax1 = mChart2.getAxisRight();
-//        setmax1.setAxisMaxValue(300);
-//
-//
-//
-//
-//        YAxis yl = mChart2.getAxisLeft();
-//        yl.setDrawAxisLine(true);
-//        yl.setDrawGridLines(true);
-//        yl.setGridLineWidth(0.3f);
-//        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yl.setInverted(true);
-//
-//        YAxis yr = mChart2.getAxisRight();
-//        yr.setDrawAxisLine(true);
-//        yr.setDrawGridLines(false);
-//        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yr.setInverted(true);
-//
-////        if(value >= 50){
-//
-//
-//            if(value >= 150){
-//                setDataHorizontal(set, value, R.color.green, Des);
-//            }
-//            else{
-//                setDataHorizontal(set, value,R.color.red, Des);
-//            }
-//
-//
-//        mChart2.animateY(2500);
-//
-//
-//        Legend l = mChart2.getLegend();
-//        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-//        l.setFormSize(8f);
-//        l.setXEntrySpace(4f);
-//
-//        // mChart.setDrawLegend(false);
-//
-//    }
-//    private void createHorizontalChartBaht_DAY(int set , float value,String Des){
-//        mChart2 = (HorizontalBarChart) findViewById(R.id.chart2);
-//        // mChart.setHighlightEnabled(false);
-//
-//        mChart2.setDrawBarShadow(false);
-//
-//        mChart2.setDrawValueAboveBar(true);
-//
-//        mChart2.setDescription("");
-//
-//        // if more than 60 entries are displayed in the chart, no values will be
-//        // drawn
-//        mChart2.setMaxVisibleValueCount(60);
-//
-//        // scaling can now only be done on x- and y-axis separately
-//        mChart2.setPinchZoom(false);
-//
-//        // draw shadows for each bar that show the maximum value
-//        // mChart.setDrawBarShadow(true);
-//
-//        // mChart.setDrawXLabels(false);
-//
-//        mChart2.setDrawGridBackground(false);
-//
-//        // mChart.setDrawYLabels(false);
-//
-//
-//        XAxis xl = mChart2.getXAxis();
-//        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xl.setDrawAxisLine(true);
-//        xl.setDrawGridLines(true);
-//        xl.setGridLineWidth(0.3f);
-//
-//        YAxis setmax = mChart2.getAxisLeft();
-//        setmax.setAxisMaxValue(3000);
-//        YAxis setmax1 = mChart2.getAxisRight();
-//        setmax1.setAxisMaxValue(3000);
-//
-//        YAxis yl = mChart2.getAxisLeft();
-//        yl.setDrawAxisLine(true);
-//        yl.setDrawGridLines(true);
-//        yl.setGridLineWidth(0.3f);
-//        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yl.setInverted(true);
-//
-//        YAxis yr = mChart2.getAxisRight();
-//        yr.setDrawAxisLine(true);
-//        yr.setDrawGridLines(false);
-//        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yr.setInverted(true);
-//        if(value >= 1500){
-//            setDataHorizontal(set, value, R.color.green, Des);
-//        }
-//        else{
-//            setDataHorizontal(set, value,R.color.red, Des);
-//        }
-//
-//        mChart2.animateY(2500);
-//
-//
-//        Legend l = mChart2.getLegend();
-//        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-//        l.setFormSize(8f);
-//        l.setXEntrySpace(4f);
-//
-//        // mChart.setDrawLegend(false);
-//
-//    }
-//    private void createHorizontalChartBaht_KM(int set , float value,String Des){
-//        mChart2 = (HorizontalBarChart) findViewById(R.id.chart4);
-//        // mChart.setHighlightEnabled(false);
-//
-//        mChart2.setDrawBarShadow(false);
-//
-//        mChart2.setDrawValueAboveBar(true);
-//
-//        mChart2.setDescription("");
-//
-//        // if more than 60 entries are displayed in the chart, no values will be
-//        // drawn
-//        mChart2.setMaxVisibleValueCount(60);
-//
-//        // scaling can now only be done on x- and y-axis separately
-//        mChart2.setPinchZoom(false);
-//
-//        // draw shadows for each bar that show the maximum value
-//        // mChart.setDrawBarShadow(true);
-//
-//        // mChart.setDrawXLabels(false);
-//
-//        mChart2.setDrawGridBackground(false);
-//
-//        // mChart.setDrawYLabels(false);
-//
-//
-//        XAxis xl = mChart2.getXAxis();
-//        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xl.setDrawAxisLine(true);
-//        xl.setDrawGridLines(true);
-//        xl.setGridLineWidth(0.3f);
-//
-//
-//
-//
-//
-//        YAxis yl = mChart2.getAxisLeft();
-//        yl.setDrawAxisLine(true);
-//        yl.setDrawGridLines(true);
-//        yl.setGridLineWidth(0.3f);
-//        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yl.setInverted(true);
-//
-//        YAxis yr = mChart2.getAxisRight();
-//        yr.setDrawAxisLine(true);
-//        yr.setDrawGridLines(false);
-//        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-////        yr.setInverted(true);
-//
-//        setDataHorizontal(set, value,R.color.green, Des);
-//        mChart2.animateY(2500);
-//
-//
-//        Legend l = mChart2.getLegend();
-//        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-//        l.setFormSize(8f);
-//        l.setXEntrySpace(4f);
-//
-//        // mChart.setDrawLegend(false);
-//
-//    }
-//    private void setDataHorizontal(int count, float range , int color ,String Des) {
-//
-//        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-//        ArrayList<String> xVals = new ArrayList<String>();
-//
-//        for (int i = 0; i < count; i++) {
-//            xVals.add(String.valueOf(i));
-////            yVals1.add(new BarEntry((float) (Math.random() * range), i));
-//            yVals1.add(new BarEntry(range, i));
-//
-//        }
-//
-//        BarDataSet set1;
-//
-//            set1 = new BarDataSet(yVals1, Des);
-//            set1.setColor(getResources().getColor(color));
-//
-//            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-//            dataSets.add(set1);
-//
-//            BarData data = new BarData(xVals, dataSets);
-//            data.setValueTextSize(10f);
-////            data.setValueTextSize(5f);
-//            mChart2.setData(data);
-//
-//    }
+    private void setDataPie(int count, float[] range) {
+
+
+
+        ArrayList<com.github.mikephil.charting.data.Entry> yVals1 = new ArrayList<com.github.mikephil.charting.data.Entry>();
+
+        // IMPORTANT: In a PieChart, no values (Entry) should have the same
+        // xIndex (even if from different DataSets), since no values can be
+        // drawn above each other.
+        for (int i = 0; i < count + 1; i++) {
+            yVals1.add(new com.github.mikephil.charting.data.Entry((float) range[i], i));
+        }
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        xVals.add("JOB");
+        xVals.add("STAND BY");
+
+        for (int i = 0; i < count + 1; i++)
+            xVals.add(String.valueOf(i));
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        int[] array = new int[2];
+        array[0] = Color.rgb(0, 255, 0); //green
+        array[1] = Color.rgb(255, 0, 0); //red
+        for (int c : array)
+            colors.add(c);
+
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(xVals, dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.BLACK);
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
+    }
+
+
+    private void createPieChartJob_HR(int set ,float value, float value1)
+    {
+        //mChart = (PieChart)findViewById(R.id.chart1);
+        mChart.setUsePercentValues(true);
+        mChart.setDescription("");
+        mChart.setExtraOffsets(5, 10, 5, 5);
+
+
+        mChart.setDrawHoleEnabled(true);
+        mChart.setHoleColor(Color.WHITE);
+
+        mChart.setTransparentCircleColor(Color.WHITE);
+        mChart.setTransparentCircleAlpha(110);
+
+
+        mChart.setHoleRadius(58f);
+        mChart.setTransparentCircleRadius(61f);
+
+        mChart.setDrawCenterText(true);
+
+        mChart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        mChart.setHighlightPerTapEnabled(true);
+
+        float[] valuearr = new float[2];
+        valuearr[0] = value;
+        valuearr[1]= value1;
+        setDataPie(set, valuearr);
+
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);
+
+        Legend l = mChart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+    }
+
+    public void setDataRadarChart() {
+
+        float mult = 150;
+        int cnt = 9;
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+
+        // IMPORTANT: In a PieChart, no values (Entry) should have the same
+        // xIndex (even if from different DataSets), since no values can be
+        // drawn above each other.
+        for (int i = 0; i < cnt; i++) {
+            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+        }
+
+        for (int i = 0; i < cnt; i++) {
+            yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+        }
+
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        for (int i = 0; i < cnt; i++)
+            xVals.add(String.valueOf(i));
+
+        RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
+        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set1.setDrawFilled(true);
+        set1.setLineWidth(2f);
+
+        RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
+        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        set2.setFillColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        set2.setDrawFilled(true);
+        set2.setLineWidth(2f);
+
+        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
+        sets.add(set1);
+        sets.add(set2);
+
+        RadarData data = new RadarData(xVals, sets);
+        data.setValueTextSize(8f);
+        data.setDrawValues(false);
+
+        mChart1.setData(data);
+
+        mChart1.invalidate();
+    }
+    private void createRadarChart(){
+        //mChart1 = (RadarChart) findViewById(R.id.chart2);
+        mChart1.setDescription("");
+
+        mChart1.setWebLineWidth(1.5f);
+        mChart1.setWebLineWidthInner(0.75f);
+        mChart1.setWebAlpha(100);
+        setDataRadarChart();
+
+        mChart1.animateXY(
+                1400, 1400,
+                Easing.EasingOption.EaseInOutQuad,
+                Easing.EasingOption.EaseInOutQuad);
+
+        XAxis xAxis = mChart1.getXAxis();
+        xAxis.setTextSize(9f);
+
+        YAxis yAxis = mChart1.getYAxis();
+        yAxis.setLabelCount(5, false);
+        yAxis.setTextSize(9f);
+        yAxis.setAxisMinValue(0f);
+
+        Legend l = mChart1.getLegend();
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(5f);
+    }
+
+    private void createHorizontalChartBaht_HR(int set , float value,String Des){
+        //mChart2 = (HorizontalBarChart) findViewById(R.id.chart3);
+        // mChart.setHighlightEnabled(false);
+
+        mChart2.setDrawBarShadow(false);
+
+        mChart2.setDrawValueAboveBar(true);
+
+        mChart2.setDescription("");
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        mChart2.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart2.setPinchZoom(false);
+
+        // draw shadows for each bar that show the maximum value
+        // mChart.setDrawBarShadow(true);
+
+        // mChart.setDrawXLabels(false);
+
+        mChart2.setDrawGridBackground(false);
+
+        // mChart.setDrawYLabels(false);
+
+
+        XAxis xl = mChart2.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(true);
+        xl.setGridLineWidth(0.3f);
+
+        YAxis setmax = mChart2.getAxisLeft();
+        setmax.setAxisMaxValue(300);
+        YAxis setmax1 = mChart2.getAxisRight();
+        setmax1.setAxisMaxValue(300);
+
+
+
+
+        YAxis yl = mChart2.getAxisLeft();
+        yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
+        yl.setGridLineWidth(0.3f);
+        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yl.setInverted(true);
+
+        YAxis yr = mChart2.getAxisRight();
+        yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(false);
+        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yr.setInverted(true);
+
+//        if(value >= 50){
+
+
+        if(value >= 150){
+            setDataHorizontal(set, value, R.color.green, Des);
+        }
+        else{
+            setDataHorizontal(set, value,R.color.red, Des);
+        }
+
+
+        mChart2.animateY(2500);
+
+
+        Legend l = mChart2.getLegend();
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setFormSize(8f);
+        l.setXEntrySpace(4f);
+
+        // mChart.setDrawLegend(false);
+
+    }
+    private void createHorizontalChartBaht_DAY(int set , float value,String Des){
+        //mChart2 = (HorizontalBarChart) findViewById(R.id.chart2);
+        // mChart.setHighlightEnabled(false);
+
+        mChart2.setDrawBarShadow(false);
+
+        mChart2.setDrawValueAboveBar(true);
+
+        mChart2.setDescription("");
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        mChart2.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart2.setPinchZoom(false);
+
+        // draw shadows for each bar that show the maximum value
+        // mChart.setDrawBarShadow(true);
+
+        // mChart.setDrawXLabels(false);
+
+        mChart2.setDrawGridBackground(false);
+
+        // mChart.setDrawYLabels(false);
+
+
+        XAxis xl = mChart2.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(true);
+        xl.setGridLineWidth(0.3f);
+
+        YAxis setmax = mChart2.getAxisLeft();
+        setmax.setAxisMaxValue(3000);
+        YAxis setmax1 = mChart2.getAxisRight();
+        setmax1.setAxisMaxValue(3000);
+
+        YAxis yl = mChart2.getAxisLeft();
+        yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
+        yl.setGridLineWidth(0.3f);
+        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yl.setInverted(true);
+
+        YAxis yr = mChart2.getAxisRight();
+        yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(false);
+        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yr.setInverted(true);
+        if(value >= 1500){
+            setDataHorizontal(set, value, R.color.green, Des);
+        }
+        else{
+            setDataHorizontal(set, value,R.color.red, Des);
+        }
+
+        mChart2.animateY(2500);
+
+
+        Legend l = mChart2.getLegend();
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setFormSize(8f);
+        l.setXEntrySpace(4f);
+
+        // mChart.setDrawLegend(false);
+
+    }
+    private void createHorizontalChartBaht_KM(int set , float value,String Des){
+        //mChart2 = (HorizontalBarChart) findViewById(R.id.chart4);
+        // mChart.setHighlightEnabled(false);
+
+        mChart2.setDrawBarShadow(false);
+
+        mChart2.setDrawValueAboveBar(true);
+
+        mChart2.setDescription("");
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        mChart2.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart2.setPinchZoom(false);
+
+        // draw shadows for each bar that show the maximum value
+        // mChart.setDrawBarShadow(true);
+
+        // mChart.setDrawXLabels(false);
+
+        mChart2.setDrawGridBackground(false);
+
+        // mChart.setDrawYLabels(false);
+
+
+        XAxis xl = mChart2.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(true);
+        xl.setGridLineWidth(0.3f);
+
+
+
+
+
+        YAxis yl = mChart2.getAxisLeft();
+        yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
+        yl.setGridLineWidth(0.3f);
+        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yl.setInverted(true);
+
+        YAxis yr = mChart2.getAxisRight();
+        yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(false);
+        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+//        yr.setInverted(true);
+
+        setDataHorizontal(set, value,R.color.green, Des);
+        mChart2.animateY(2500);
+
+
+        Legend l = mChart2.getLegend();
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setFormSize(8f);
+        l.setXEntrySpace(4f);
+
+        // mChart.setDrawLegend(false);
+
+    }
+    private void setDataHorizontal(int count, float range , int color ,String Des) {
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        for (int i = 0; i < count; i++) {
+            xVals.add(String.valueOf(i));
+//            yVals1.add(new BarEntry((float) (Math.random() * range), i));
+            yVals1.add(new BarEntry(range, i));
+
+        }
+
+        BarDataSet set1;
+
+        set1 = new BarDataSet(yVals1, Des);
+        set1.setColor(getResources().getColor(color));
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextSize(10f);
+//            data.setValueTextSize(5f);
+        mChart2.setData(data);
+
+    }
 
 
     private PieChart mChart;
@@ -1812,24 +1792,35 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private HorizontalBarChart mChart2;
 
     private void init() {
-////        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
-////                , AppSharedPreferences.getInstance(HomeActivity.this).getStateStandby());
+        //old
 //        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
-//                , 10 * 3600);
-//        createHorizontalChartBaht_DAY(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay(), "บาท/วัน (1500)");
-////        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtHour(), "BAHT/HRs (150)");
-//        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()/hoursshifttime, "บาท/ชม. ("+150+")");
-//
-//
-//        if(AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM() != 0 &&AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm()>=AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()) {
-//            createHorizontalChartBaht_KM(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()
-//                    / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "บาท/กิโลเมตร");
-////            createHorizontalChartBaht_KM(1, 446 / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "BAHT/KMs");
-//
-//        }
-//        else{
-//            createHorizontalChartBaht_KM(1,0,"บาท/กิโลเมตร");
-//        }
+//                , AppSharedPreferences.getInstance(HomeActivity.this).getStateStandby());
+        //old
+
+
+        createPieChartJob_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateOnjob()
+                , 10 * 3600);
+        createHorizontalChartBaht_DAY(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay(), "บาท/วัน (1500)");
+        //old
+//        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtHour(), "BAHT/HRs (150)");
+        //old
+
+
+        createHorizontalChartBaht_HR(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()/hoursshifttime, "บาท/ชม. ("+150+")");
+
+
+        if(AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM() != 0 &&AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm()>=AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()) {
+            createHorizontalChartBaht_KM(1, AppSharedPreferences.getInstance(HomeActivity.this).getStateBahtDay()
+                    / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "บาท/กิโลเมตร");
+            //old
+//            createHorizontalChartBaht_KM(1, 446 / (AppSharedPreferences.getInstance(HomeActivity.this).getStateApiKm() - AppSharedPreferences.getInstance(HomeActivity.this).getStateLoginKM()), "BAHT/KMs");
+            //old
+
+        }
+        else{
+            createHorizontalChartBaht_KM(1,0,"บาท/กิโลเมตร");
+        }
+
 
 
 //        check_get_job = true;
@@ -1840,7 +1831,8 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         //cluster
 
 
-        aq.id(R.id.log_text).text("Operation ID: " + LoginHelper.getInstance(this).getOperationID() + ", Taxi ID: " + LoginHelper.getInstance(this).getTaxiID() + ", Version: " + getResources().getText(R.string.app_version));
+        //aq.id(R.id.log_text).text("Operation ID: " + LoginHelper.getInstance(this).getOperationID() + ", Taxi ID: " + LoginHelper.getInstance(this).getTaxiID() + ", Version: " + getResources().getText(R.string.app_version) +"Login Time : "+AppSharedPreferences.getInstance(this).getLoginTime().toString());
+//        aq.id(R.id.log_text).text("Operation ID: " + LoginHelper.getInstance(this).getOperationID() + ", Taxi ID: " + LoginHelper.getInstance(this).getTaxiID() + ", Version: " + getResources().getText(R.string.app_version));
 
         profile = (HashMap<String, Object>) LoginHelper.getInstance(this).getRememberLogin();
         aq.id(R.id.home_name).text(getString(R.string.home_title_1) + " " + String.valueOf(profile.get("staff_name")));
@@ -1880,7 +1872,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         mapview.setOnMarkerClickListener(this);
         mapview.setOnInfoWindowClickListener(this);
         mapview.setTrafficEnabled(false);
-        mapview.getUiSettings().setCompassEnabled(false);
 
         //marker
 //        markerImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher);
@@ -1920,25 +1911,27 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         aq.id(R.id.log_out).clicked(this);
         aq.id(R.id.icon_thum).visibility(View.GONE);
         aq.id(R.id.icon_app).visibility(View.GONE);
-//        aq.id(R.id.icon_visa).visibility(View.GONE);
+        //aq.id(R.id.icon_visa).visibility(View.GONE);
         aq.id(R.id.icon_reserve).visibility(View.GONE);
 
-//        aq.id(R.id.internetOpen).visibility(View.GONE);
-//        aq.id(R.id.internetClose).visibility(View.GONE);
-        aq.id(R.id.networkClose).visibility(View.GONE);
+        //aq.id(R.id.internetOpen).visibility(View.GONE);
+        //aq.id(R.id.internetClose).visibility(View.GONE);
+        //aq.id(R.id.networkClose).visibility(View.GONE);
         aq.id(R.id.networkOpen).visibility(View.GONE);
 
         aq.id(R.id.btn_menu).clicked(this);
+        aq.id(R.id.btn_menu).image(R.drawable.icon_main_menu_non_active);
+
         aq.id(R.id.home_customer_pix).clicked(this);
         aq.id(R.id.btn_Call).clicked(this);
 
-        aq.id(R.id.btn_traffic_non).clicked(this);
-        aq.id(R.id.btn_traffic_non).visibility(View.GONE);
+//        aq.id(R.id.btn_traffic_non).clicked(this);
+//        aq.id(R.id.btn_traffic_non).visibility(View.GONE);
         aq.id(R.id.btn_traffic).clicked(this);
         aq.id(R.id.btn_traffic).visibility(View.GONE);
 
-        aq.id(R.id.btn_menu_close).clicked(this);
-        aq.id(R.id.btn_menu_close).visibility(View.GONE);
+        //aq.id(R.id.btn_menu_close).clicked(this);
+        //aq.id(R.id.btn_menu_close).visibility(View.GONE);
         aq.id(R.id.home_btn_mylocation).visibility(View.GONE);
 
 
@@ -1947,8 +1940,9 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
         aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
         aq.id(R.id.btn_Start_Mter).clicked(this);
-        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
-        aq.id(R.id.btn_Stop_Meter).clicked(this);
+
+//        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+//        aq.id(R.id.btn_Stop_Meter).clicked(this);
 
         aq.id(R.id.home_topframe2).visibility(View.GONE);
         aq.id(R.id.home_customer_pix).visibility(View.GONE);
@@ -1960,7 +1954,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         aq.id(R.id.home_btn_incident).clicked(this);
         aq.id(R.id.home_btn_incident).visibility(View.GONE);
 
-//        aq.id(R.id.home_btn_statusbar_1).clicked(this);
+        //aq.id(R.id.home_btn_statusbar_1).clicked(this);
         aq.id(R.id.btn_thumbing).clicked(this);
         aq.id(R.id.home_btn_outofservice).clicked(this);
         aq.id(R.id.home_btn_sos).clicked(this);
@@ -2148,6 +2142,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     timerMeter = null;
                 }
                 aq.id(R.id.btn_Start_Mter).visible();
+                aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
                 aq.id(R.id.icon_thum).visible();
 
                 if (AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
@@ -2213,55 +2208,106 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 break;
 
             case R.id.btn_traffic:
-                aq.id(R.id.btn_traffic).visibility(View.GONE);
-                aq.id(R.id.btn_traffic_non).visible();
-                mapview.setTrafficEnabled(false);
+                if(Status.check_btn_traffic == true){
+                    aq.id(R.id.btn_traffic).visibility(View.VISIBLE);
+//                    aq.id(R.id.btn_traffic_non).visible();
+                    aq.id(R.id.btn_traffic).image(R.drawable.icon_traffic_non_active);
+
+                    mapview.setTrafficEnabled(false);
+                    Status.check_btn_traffic = !Status.check_btn_traffic;
+                }
+                else{
+//                    aq.id(R.id.btn_traffic_non).visibility(View.GONE);
+                    aq.id(R.id.btn_traffic).visible();
+                    aq.id(R.id.btn_traffic).image(R.drawable.icon_traffic_active);
+                    mapview.setTrafficEnabled(true);
+                    Status.check_btn_traffic = !Status.check_btn_traffic;
+                }
                 break;
 
-            case R.id.btn_traffic_non:
-                aq.id(R.id.btn_traffic_non).visibility(View.GONE);
-                aq.id(R.id.btn_traffic).visible();
-                mapview.setTrafficEnabled(true);
-
-                break;
+//            case R.id.btn_traffic_non:
+//                aq.id(R.id.btn_traffic_non).visibility(View.GONE);
+//                aq.id(R.id.btn_traffic).visible();
+//                mapview.setTrafficEnabled(true);
+//                break;
 
             case R.id.btn_menu:
 
-                aq.id(R.id.button).visible();
-                aq.id(R.id.btn_menu).visibility(View.GONE);
-                aq.id(R.id.btn_menu_close).visible();
-                aq.id(R.id.btn_traffic_non).visible();
-                aq.id(R.id.home_btn_gas).visible();
-                aq.id(R.id.home_btn_incident).visible();
-                aq.id(R.id.btn_navigation).visible();
-                aq.id(R.id.home_btn_mylocation).visible();
+                if(Status.check_btn_menu == true){
+                    aq.id(R.id.button).visible();
 
-                aq.id(R.id.btn_traffic_non).animate(fade_in);
-                aq.id(R.id.home_btn_gas).animate(fade_in);
-                aq.id(R.id.home_btn_incident).animate(fade_in);
-                aq.id(R.id.btn_navigation).animate(fade_in);
-                aq.id(R.id.home_btn_mylocation).animate(fade_in);
+//                    aq.id(R.id.btn_menu).visibility(View.GONE);
+//                    aq.id(R.id.btn_menu_close).visible();
+                    aq.id(R.id.btn_menu).image(R.drawable.icon_main_menu_active);
+
+                    aq.id(R.id.btn_traffic).visible();
+                    aq.id(R.id.btn_traffic).image(R.drawable.icon_traffic_non_active);
+                    aq.id(R.id.home_btn_gas).visible();
+                    aq.id(R.id.home_btn_incident).visible();
+                    aq.id(R.id.btn_navigation).visible();
+                    aq.id(R.id.home_btn_mylocation).visible();
+
+                    aq.id(R.id.btn_traffic).animate(fade_in);
+                    aq.id(R.id.home_btn_gas).animate(fade_in);
+                    aq.id(R.id.home_btn_incident).animate(fade_in);
+                    aq.id(R.id.btn_navigation).animate(fade_in);
+                    aq.id(R.id.home_btn_mylocation).animate(fade_in);
+                    Status.check_btn_menu = !Status.check_btn_menu;
+                    Log.i("menu","1");
+                }
+                else{
+                    aq.id(R.id.button).visibility(View.GONE);
+                    aq.id(R.id.cluster).visibility(View.GONE);
+
+//                    aq.id(R.id.btn_menu_close).visibility(View.GONE);
+//                    aq.id(R.id.btn_menu).visible();
+                    aq.id(R.id.btn_menu).image(R.drawable.icon_main_menu_non_active);
+
+                    aq.id(R.id.home_btn_gas).visibility(View.GONE);
+                    aq.id(R.id.home_btn_incident).visibility(View.GONE);
+                    aq.id(R.id.home_btn_mylocation).visibility(View.GONE);
+                    aq.id(R.id.btn_navigation).visibility(View.GONE);
+                    aq.id(R.id.btn_traffic).visibility(View.GONE);
+//                    aq.id(R.id.btn_traffic_non).visibility(View.GONE);
+
+                    Status.check_btn_menu = !Status.check_btn_menu;
+                    Log.i("menu","2");
+                }
+//                aq.id(R.id.button).visible();
+//                aq.id(R.id.btn_menu).visibility(View.GONE);
+//                aq.id(R.id.btn_menu_close).visible();
+//                aq.id(R.id.btn_traffic_non).visible();
+//                aq.id(R.id.home_btn_gas).visible();
+//                aq.id(R.id.home_btn_incident).visible();
+//                aq.id(R.id.btn_navigation).visible();
+//                aq.id(R.id.home_btn_mylocation).visible();
+//
+//                aq.id(R.id.btn_traffic_non).animate(fade_in);
+//                aq.id(R.id.home_btn_gas).animate(fade_in);
+//                aq.id(R.id.home_btn_incident).animate(fade_in);
+//                aq.id(R.id.btn_navigation).animate(fade_in);
+//                aq.id(R.id.home_btn_mylocation).animate(fade_in);
 
 
                 break;
 
-            case R.id.btn_menu_close:
-
-                aq.id(R.id.button).visibility(View.GONE);
-                aq.id(R.id.cluster).visibility(View.GONE);
-                aq.id(R.id.btn_menu_close).visibility(View.GONE);
-
-                aq.id(R.id.btn_menu).visible();
-                aq.id(R.id.home_btn_gas).visibility(View.GONE);
-                aq.id(R.id.home_btn_incident).visibility(View.GONE);
-                aq.id(R.id.home_btn_mylocation).visibility(View.GONE);
-                aq.id(R.id.btn_navigation).visibility(View.GONE);
-                aq.id(R.id.btn_traffic).visibility(View.GONE);
-                aq.id(R.id.btn_traffic_non).visibility(View.GONE);
-
-
-
-                break;
+//            case R.id.btn_menu_close:
+//
+//                aq.id(R.id.button).visibility(View.GONE);
+//                aq.id(R.id.cluster).visibility(View.GONE);
+//                aq.id(R.id.btn_menu_close).visibility(View.GONE);
+//
+//                aq.id(R.id.btn_menu).visible();
+//                aq.id(R.id.home_btn_gas).visibility(View.GONE);
+//                aq.id(R.id.home_btn_incident).visibility(View.GONE);
+//                aq.id(R.id.home_btn_mylocation).visibility(View.GONE);
+//                aq.id(R.id.btn_navigation).visibility(View.GONE);
+//                aq.id(R.id.btn_traffic).visibility(View.GONE);
+//                aq.id(R.id.btn_traffic_non).visibility(View.GONE);
+//
+//
+//
+//                break;
 
             case R.id.home_btn_gas:
                 //add
@@ -2298,22 +2344,22 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 break;
 
 //            case R.id.button2:
-//            if(Status.checkweb){
-//                aq.id(R.id.button2).text("open");
-//                aq.id(R.id.webView1).visibility(View.GONE);
-//                Status.checkweb = false;
-//            }
+//                if(Status.checkweb){
+//                    aq.id(R.id.button2).text("open");
+//                    aq.id(R.id.webView1).visibility(View.GONE);
+//                    Status.checkweb = false;
+//                }
 //                else{
-//                aq.id(R.id.webView1).visible();
-//                aq.id(R.id.button2).text("close");
-//                webView = (WebView) findViewById(R.id.webView1);
-//                webView.setWebViewClient(new WebViewClient());
-//                webView.getSettings().setJavaScriptEnabled(true);
-//                webView.loadUrl("http://www.google.com");
-//                Status.checkweb = true;
-//            }
+//                    aq.id(R.id.webView1).visible();
+//                    aq.id(R.id.button2).text("close");
+//                    webView = (WebView) findViewById(R.id.webView1);
+//                    webView.setWebViewClient(new WebViewClient());
+//                    webView.getSettings().setJavaScriptEnabled(true);
+//                    webView.loadUrl("http://www.google.com");
+//                    Status.checkweb = true;
+//                }
 //                break;
-//
+
 //            case R.id.home_btn_statusbar_2:
 //                Status.enable = false;
 //                //Toast.makeText(getApplicationContext(),"Status.enable = " + Status.enable, Toast.LENGTH_SHORT).show();
@@ -2323,34 +2369,56 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 //                break;
 
             case R.id.btn_Start_Mter:
-                String manStart = APIs.ManMeterstart();
-                aq.ajax(manStart, String.class, new AjaxCallback<String>() {
-                });
-                aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-                aq.id(R.id.btn_Stop_Meter).visible();
 
-                Status.enable = false;
-                AppSharedPreferences.getInstance(this).setJobType("1");
-                arrivedPickLocation(AppSharedPreferences.getInstance(this).getJobID());
-                //startJob(AppSharedPreferences.getInstance(this).getJobID(), AppSharedPreferences.getInstance(this).getJobType());
-                break;
+                if(Status.check_btn_meter == true){
+                    String manStart = APIs.ManMeterstart();
+                    aq.ajax(manStart, String.class, new AjaxCallback<String>() {
+                    });
 
-            case R.id.btn_Stop_Meter:
-                //not use
-                String manStop = APIs.ManMeterstop();
-                aq.ajax(manStop, String.class, new AjaxCallback<String>(){});
-                endJob(AppSharedPreferences.getInstance(this).getJobID(), enable_credit_card, reserved_type);
-//                check_get_job = false;
-                if(Status.enableNavigation) {
-                    closeNavigation();
+                    aq.id(R.id.btn_Start_Mter).visible();
+//                    aq.id(R.id.btn_Stop_Meter).visible();
+                    aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_close_meter);
+
+                    Status.enable = false;
+                    AppSharedPreferences.getInstance(this).setJobType("1");
+                    arrivedPickLocation(AppSharedPreferences.getInstance(this).getJobID());
+                    //startJob(AppSharedPreferences.getInstance(this).getJobID(), AppSharedPreferences.getInstance(this).getJobType());
+                    Status.check_btn_meter = !Status.check_btn_meter;
                 }
-                aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
-                Status.enable = true;
-
-                //endJob(AppSharedPreferences.getInstance(this).getJobID(),enable_credit_card,reserved_type);
-
+                else{
+                    //not use
+                    String manStop = APIs.ManMeterstop();
+                    aq.ajax(manStop, String.class, new AjaxCallback<String>(){});
+                    endJob(AppSharedPreferences.getInstance(this).getJobID(), enable_credit_card, reserved_type);
+//                check_get_job = false;
+                    if(Status.enableNavigation) {
+                        closeNavigation();
+                    }
+                    //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                    aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
+                    Status.enable = true;
+                    Status.check_btn_meter = !Status.check_btn_meter;
+                    //endJob(AppSharedPreferences.getInstance(this).getJobID(),enable_credit_card,reserved_type);
+                }
 
                 break;
+
+//            case R.id.btn_Stop_Meter:
+//                //not use
+//                String manStop = APIs.ManMeterstop();
+//                aq.ajax(manStop, String.class, new AjaxCallback<String>(){});
+//                endJob(AppSharedPreferences.getInstance(this).getJobID(), enable_credit_card, reserved_type);
+////                check_get_job = false;
+//                if(Status.enableNavigation) {
+//                    closeNavigation();
+//                }
+//                aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+//                Status.enable = true;
+//
+//                //endJob(AppSharedPreferences.getInstance(this).getJobID(),enable_credit_card,reserved_type);
+//
+//
+//                break;
 
 //            case R.id.home_btn_statusbar_3:
 //                aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_status2_active);
@@ -2472,7 +2540,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 //เมื่อถึงศูนย์ Toyota
 //                aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_status2_active);
 //                aq.id(R.id.home_btn_statusbar_3).textColorId(R.color.white);
-//                //oak
+                //oak
                 //Toast.makeText(getApplicationContext(),"Endjob7",Toast.LENGTH_SHORT).show();
                 endJob(AppSharedPreferences.getInstance(this).getJobID(),enable_credit_card,reserved_type);
                 break;
@@ -2696,135 +2764,136 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 //        {
 //        q++;
 //        aq.id(R.id.textView7).text("Running :"+q+"  Data"+data);
-            JSONParser json;
-            try {
-                json = new JSONParser(data);
-                HashMap<String, Object> dataObj = (HashMap<String, Object>) json.convertJson2HashMap();
-                Global.printLog(true, "dataObj", String.valueOf(dataObj));
+        JSONParser json;
+        try {
+            json = new JSONParser(data);
+            HashMap<String, Object> dataObj = (HashMap<String, Object>) json.convertJson2HashMap();
+            Global.printLog(true, "dataObj", String.valueOf(dataObj));
 
-                if (String.valueOf(dataObj.get("code")).equalsIgnoreCase("200") && dialog == null) {
+            if (String.valueOf(dataObj.get("code")).equalsIgnoreCase("200") && dialog == null) {
 
-                    HashMap<String, Object> reserveObj = (HashMap<String, Object>) dataObj.get("data");
-                    if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("0")) {
+                HashMap<String, Object> reserveObj = (HashMap<String, Object>) dataObj.get("data");
+                if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("0")) {
 
-                        //Out of Service
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("1")) {
-                        //Job Reserved
-                        if (String.valueOf(reserveObj.get("enable_credit_card")).equalsIgnoreCase("0")) {
-                            enable_credit_card = "0";
-                            AppSharedPreferences.getInstance(HomeActivity.this).setEnableCard(enable_credit_card);
-                        }
+                    //Out of Service
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("1")) {
+                    //Job Reserved
+                    if (String.valueOf(reserveObj.get("enable_credit_card")).equalsIgnoreCase("0")) {
+                        enable_credit_card = "0";
+                        AppSharedPreferences.getInstance(HomeActivity.this).setEnableCard(enable_credit_card);
+                    }
 
-                        if (String.valueOf(reserveObj.get("enable_credit_card")).equalsIgnoreCase("1")) {
-                            enable_credit_card = "1";
-                            AppSharedPreferences.getInstance(HomeActivity.this).setEnableCard(enable_credit_card);
-                        }
+                    if (String.valueOf(reserveObj.get("enable_credit_card")).equalsIgnoreCase("1")) {
+                        enable_credit_card = "1";
+                        AppSharedPreferences.getInstance(HomeActivity.this).setEnableCard(enable_credit_card);
+                    }
 
-                        if (String.valueOf(reserveObj.get("reserved_type")).equalsIgnoreCase("1")) {
-                            //aq.id(R.id.icon_app).visible();
-                            reserved_type = "1";
-                            AppSharedPreferences.getInstance(HomeActivity.this).setReservedType(reserved_type);
-                        }
-                        if (String.valueOf(reserveObj.get("reserved_type")).equalsIgnoreCase("2")) {
-                            //aq.id(R.id.icon_reserve).visible();
-                            reserved_type = "2";
-                            AppSharedPreferences.getInstance(HomeActivity.this).setReservedType(reserved_type);
-                        }
+                    if (String.valueOf(reserveObj.get("reserved_type")).equalsIgnoreCase("1")) {
+                        //aq.id(R.id.icon_app).visible();
+                        reserved_type = "1";
+                        AppSharedPreferences.getInstance(HomeActivity.this).setReservedType(reserved_type);
+                    }
+                    if (String.valueOf(reserveObj.get("reserved_type")).equalsIgnoreCase("2")) {
+                        //aq.id(R.id.icon_reserve).visible();
+                        reserved_type = "2";
+                        AppSharedPreferences.getInstance(HomeActivity.this).setReservedType(reserved_type);
+                    }
 
-                        if (AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    if (AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
 
-                            resetProgressState();
-                            //Oak
-                            //Toast.makeText(getApplicationContext(),"Endjob11",Toast.LENGTH_SHORT).show();
-                            endJobWithoutResult(AppSharedPreferences.getInstance(this).getJobID());
-
-//                            aq.id(R.id.home_btn_statusbar_1).clicked(HomeActivity.this);
-//                            aq.id(R.id.home_btn_statusbar_2).clicked(null);
-//                            aq.id(R.id.home_btn_statusbar_3).clicked(null);
-                            aq.id(R.id.btn_thumbing).visibility(View.VISIBLE);
-
-                            aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-                            aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
-
-                            aq.id(R.id.btn_pick_customer).visibility(View.GONE);
-
-//                            aq.id(R.id.home_btn_statusbar_1).textColorId(R.color.black);
-//                            aq.id(R.id.home_btn_statusbar_2).textColorId(R.color.black);
-//                            aq.id(R.id.home_btn_statusbar_3).textColorId(R.color.black);
-//
-//                            aq.id(R.id.home_btn_statusbar_1).background(R.drawable.home_btn_statusbar);
-//                            aq.id(R.id.home_btn_statusbar_2).background(R.drawable.home_btn_statusbar);
-//                            aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_btn_statusbar);
-
-                            endTripWithoutResult(AppSharedPreferences.getInstance(this).getJobID(), AppSharedPreferences.getInstance(this).getJobType());
-
-                            AppSharedPreferences.getInstance(HomeActivity.this).removeJobID();
-                            AppSharedPreferences.getInstance(HomeActivity.this).removeJobType();
-                            AppSharedPreferences.getInstance(HomeActivity.this).removeState_Hub();
-                            aq.id(R.id.home_status).text(getString(R.string.home_title_3) + " " + getString(R.string.status_001));
-                            startService(intent_jobTracking);
-
-                            if (others_marker != null) {
-                                others_marker.remove();
-                                others_marker = null;
-                                others_location = null;
-                            }
-
-                            if (taxi2othersJob != null) {
-                                taxi2othersJob.remove();
-                                taxi2othersJob = null;
-                            }
-
-                        }
-
-                        msisdn = String.valueOf(reserveObj.get("mobile"));
-                        showNotificationDialog(reserveObj, true);
-
-
-                        getDataToShown(String.valueOf(reserveObj.get("request_date")), String.valueOf(reserveObj.get("cust_name")), String.valueOf(reserveObj.get("location_title")), String.valueOf(reserveObj.get("destination_title")));
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("2") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to Hub
-                        showHubPointDialog(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("3") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Assign Shift
                         resetProgressState();
+                        //Oak
+                        //Toast.makeText(getApplicationContext(),"Endjob11",Toast.LENGTH_SHORT).show();
                         endJobWithoutResult(AppSharedPreferences.getInstance(this).getJobID());
+
+//                        aq.id(R.id.home_btn_statusbar_1).clicked(HomeActivity.this);
+//                        aq.id(R.id.home_btn_statusbar_2).clicked(null);
+//                        aq.id(R.id.home_btn_statusbar_3).clicked(null);
+                        aq.id(R.id.btn_thumbing).visibility(View.VISIBLE);
+
+                        aq.id(R.id.btn_Start_Mter).visible();
+                        //aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
+                        aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_close_meter);
+
+                        aq.id(R.id.btn_pick_customer).visibility(View.GONE);
+
+//                        aq.id(R.id.home_btn_statusbar_1).textColorId(R.color.black);
+//                        aq.id(R.id.home_btn_statusbar_2).textColorId(R.color.black);
+//                        aq.id(R.id.home_btn_statusbar_3).textColorId(R.color.black);
+//
+//                        aq.id(R.id.home_btn_statusbar_1).background(R.drawable.home_btn_statusbar);
+//                        aq.id(R.id.home_btn_statusbar_2).background(R.drawable.home_btn_statusbar);
+//                        aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_btn_statusbar);
+
                         endTripWithoutResult(AppSharedPreferences.getInstance(this).getJobID(), AppSharedPreferences.getInstance(this).getJobType());
+
                         AppSharedPreferences.getInstance(HomeActivity.this).removeJobID();
                         AppSharedPreferences.getInstance(HomeActivity.this).removeJobType();
                         AppSharedPreferences.getInstance(HomeActivity.this).removeState_Hub();
-                        showShiftDialog(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("4") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to HQ
-                        showOutOfServiceDialog(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("5") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to TOYOTA
-                        showGoToToyotaDialog(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("6") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to Cleaning Full
-                        reserveObj.put("popup_desc", getString(R.string.carwash_desc_1));
-                        showGoToCarWash(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("7") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to Cleaning Medium
-                        reserveObj.put("popup_desc", getString(R.string.carwash_desc_1_2));
-                        showGoToCarWash(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("8") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to Cleaning Fast
-                        reserveObj.put("popup_desc", getString(R.string.carwash_desc_1_3));
-                        showGoToCarWash(reserveObj);
-                    } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("9") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
-                        //Go to Gas Station
-                        showGasStationDialog(reserveObj);
+                        aq.id(R.id.home_status).text(getString(R.string.home_title_3) + " " + getString(R.string.status_001));
+                        startService(intent_jobTracking);
+
+                        if (others_marker != null) {
+                            others_marker.remove();
+                            others_marker = null;
+                            others_location = null;
+                        }
+
+                        if (taxi2othersJob != null) {
+                            taxi2othersJob.remove();
+                            taxi2othersJob = null;
+                        }
+
                     }
+
+                    msisdn = String.valueOf(reserveObj.get("mobile"));
+                    showNotificationDialog(reserveObj, true);
+
+
+                    getDataToShown(String.valueOf(reserveObj.get("request_date")), String.valueOf(reserveObj.get("cust_name")), String.valueOf(reserveObj.get("location_title")), String.valueOf(reserveObj.get("destination_title")));
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("2") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to Hub
+                    showHubPointDialog(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("3") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Assign Shift
+                    resetProgressState();
+                    endJobWithoutResult(AppSharedPreferences.getInstance(this).getJobID());
+                    endTripWithoutResult(AppSharedPreferences.getInstance(this).getJobID(), AppSharedPreferences.getInstance(this).getJobType());
+                    AppSharedPreferences.getInstance(HomeActivity.this).removeJobID();
+                    AppSharedPreferences.getInstance(HomeActivity.this).removeJobType();
+                    AppSharedPreferences.getInstance(HomeActivity.this).removeState_Hub();
+                    showShiftDialog(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("4") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to HQ
+                    showOutOfServiceDialog(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("5") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to TOYOTA
+                    showGoToToyotaDialog(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("6") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to Cleaning Full
+                    reserveObj.put("popup_desc", getString(R.string.carwash_desc_1));
+                    showGoToCarWash(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("7") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to Cleaning Medium
+                    reserveObj.put("popup_desc", getString(R.string.carwash_desc_1_2));
+                    showGoToCarWash(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("8") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to Cleaning Fast
+                    reserveObj.put("popup_desc", getString(R.string.carwash_desc_1_3));
+                    showGoToCarWash(reserveObj);
+                } else if (String.valueOf(reserveObj.get("job_type")).equalsIgnoreCase("9") && !AppSharedPreferences.getInstance(this).getJobType().equalsIgnoreCase("2")) {
+                    //Go to Gas Station
+                    showGasStationDialog(reserveObj);
                 }
-//                else
-                //getJobRequested(data);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-
             }
+//                else
+            //getJobRequested(data);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
         }
+    }
 //    }
 
 
@@ -3109,7 +3178,8 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         aq.id(R.id.btn_thumbing).visibility(View.GONE);
 
                         aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
-                        aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
+                        aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
+                        //aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
 
                         aq.id(R.id.bt_jobtype_1).visibility(View.VISIBLE);
                         aq.id(R.id.bt_jobtype_2).visibility(View.GONE);
@@ -3134,7 +3204,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                             //Toast.makeText(getApplicationContext(),"app",Toast.LENGTH_SHORT).show();
                             aq.id(R.id.icon_app).visible();
                             if(enable_credit_card.equals("1")){
-//                                aq.id(R.id.icon_visa).visible();
+                                //aq.id(R.id.icon_visa).visible();
                             }
                         }
                         if(reserved_type.equals("2"))
@@ -3292,7 +3362,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 //                        aq.id(R.id.home_btn_statusbar_1).textColorId(R.color.black);
 //                        aq.id(R.id.home_btn_statusbar_2).textColorId(R.color.black);
 //                        aq.id(R.id.home_btn_statusbar_3).textColorId(R.color.black);
-
+//
 //                        aq.id(R.id.home_btn_statusbar_1).background(R.drawable.home_btn_statusbar);
 //                        aq.id(R.id.home_btn_statusbar_2).background(R.drawable.home_btn_statusbar);
 //                        aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_btn_statusbar);
@@ -3389,7 +3459,8 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
 
                         aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
-                        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                        aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
+                        //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
 
                         startService(intent_taxi_status);
 
@@ -3409,7 +3480,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         playAudio(R.raw.sound_standby);
                         //sound
                         aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-                        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                        //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
                         AppSharedPreferences.getInstance(HomeActivity.this).removeThumbingMode();
                         Global.showAlertDialog(HomeActivity.this, String.valueOf(resultObj.get("message")));
 
@@ -3475,12 +3546,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(v);
         dialog.setCanceledOnTouchOutside(false);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        Window window = dialog.getWindow();
-        lp.copyFrom(window.getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(lp);
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3606,8 +3671,10 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                             aq.id(R.id.home_taxi_status).image(R.drawable.status_on_job);
                             //sound
                             playAudio(R.raw.sound_onjob);
-                            aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-                            aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
+                            aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
+//                            aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
+
+                            aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_close_meter);
                             setTakeCustomerToDestination();
                         }
 
@@ -3651,12 +3718,15 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         aq.id(R.id.icon_thum).visibility(View.GONE);
                         aq.id(R.id.icon_reserve).visibility(View.GONE);
                         aq.id(R.id.icon_app).visibility(View.GONE);
-//                        aq.id(R.id.icon_visa).visibility(View.GONE);
+                        //aq.id(R.id.icon_visa).visibility(View.GONE);
 
                         if (!AppSharedPreferences.getInstance(HomeActivity.this).getJobType().equalsIgnoreCase("1")) {
 
                             if (!AppSharedPreferences.getInstance(HomeActivity.this).getJobType().equalsIgnoreCase("9")) {
 
+//                                aq.id(R.id.home_btn_statusbar_1).clicked(HomeActivity.this);
+//                                aq.id(R.id.home_btn_statusbar_2).clicked(null);
+//                                aq.id(R.id.home_btn_statusbar_3).clicked(null);
                                 aq.id(R.id.btn_pick_customer).visibility(View.GONE);
                                 aq.id(R.id.bt_jobtype_2).visibility(View.GONE);
                                 aq.id(R.id.bt_jobtype_3).visibility(View.GONE);
@@ -3696,7 +3766,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
 //                                aq.id(R.id.home_btn_statusbar_4).clicked(HomeActivity.this);
 //                                aq.id(R.id.home_btn_statusbar_3).clicked(null);
-                                aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+//                                //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
 //                                aq.id(R.id.home_btn_statusbar_3).textColorId(R.color.white);
 //                                aq.id(R.id.home_btn_statusbar_3).background(R.drawable.home_status2_active);
 
@@ -3716,7 +3786,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 //                            aq.id(R.id.home_btn_statusbar_4).textColorId(R.color.white);
 //                            aq.id(R.id.home_btn_statusbar_4).clicked(null);
                             aq.id(R.id.home_status).text(getString(R.string.home_title_3) + " " + getString(R.string.status_004));
-                            aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                            //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
 
                             //Toast.makeText(getApplicationContext(),"call hashmap data",Toast.LENGTH_LONG).show();
                             HashMap<String, Object> dataObj = (HashMap<String, Object>) resultObj.get("data");
@@ -3953,6 +4023,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private ViewTripReport viewtrip;
 
     private void showTripReportDialog(HashMap<String, Object> data) {
+
         check_thum_re = true;
         playAudio(R.raw.sound_endtrip);
         // if(enableAuto) {
@@ -4254,7 +4325,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             aq.id(R.id.btn_thumbing).visibility(View.VISIBLE);
 
             aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-            aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+            //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
 
             aq.id(R.id.bt_jobtype_1).visibility(View.GONE);
             aq.id(R.id.bt_jobtype_2).visibility(View.VISIBLE);
@@ -4273,7 +4344,9 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             aq.id(R.id.home_status).text(getString(R.string.home_title_3) + " " + getString(R.string.job_type_2));
 
             aq.id(R.id.btn_thumbing).visibility(View.GONE);
+
             aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
+            aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
 
             aq.id(R.id.bt_jobtype_1).visibility(View.GONE);
             aq.id(R.id.bt_jobtype_2).visibility(View.GONE);
@@ -4410,8 +4483,10 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         aq.id(R.id.home_taxi_status).image(R.drawable.status_reserved);
         //sound
         playAudio(R.raw.sound_reserve);
+
         aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
-        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+//        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+        aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
 
         aq.id(R.id.home_status).text(getString(R.string.home_title_3) + " " + getString(R.string.status_002));
 
@@ -4631,7 +4706,8 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 //sound
                 playAudio(R.raw.sound_reserve);
                 aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
-                aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+                aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_open_meter);
 
             }
 
@@ -4657,9 +4733,9 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 aq.id(R.id.home_taxi_status).image(R.drawable.status_on_job);
                 //sound
                 playAudio(R.raw.sound_onjob);
-                aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-                aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
-
+                aq.id(R.id.btn_Start_Mter).visibility(View.VISIBLE);
+                //aq.id(R.id.btn_Stop_Meter).visibility(View.VISIBLE);
+                aq.id(R.id.btn_Start_Mter).image(R.drawable.icon_close_meter);
 
             }
 
@@ -4713,7 +4789,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
         aq.id(R.id.btn_thumbing).visibility(View.VISIBLE);
         aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+        //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
 
 
         aq.id(R.id.btn_pick_customer).visibility(View.GONE);
@@ -4721,7 +4797,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         //sound
         //playAudio("สแตนบาย");
         aq.id(R.id.btn_Start_Mter).visibility(View.GONE);
-        aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
+        //aq.id(R.id.btn_Stop_Meter).visibility(View.GONE);
         aq.id(R.id.home_btn_sos).image(R.drawable.home_sos);
 
         aq.id(R.id.bt_jobtype_1).visibility(View.GONE);
@@ -4814,12 +4890,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(v);
         dialog.setCanceledOnTouchOutside(false);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        Window window = dialog.getWindow();
-        lp.copyFrom(window.getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(lp);
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4847,6 +4917,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                                     //if(inputKm > check_last_km || inputKm == 999999999){
                                     closeDialog();
                                     logout(input_KM.getText().toString());
+
 
                                     if(mediaPlayer.isPlaying()) {
 
@@ -4933,6 +5004,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         AppSharedPreferences.getInstance(HomeActivity.this).removeApiKm();
                         AppSharedPreferences.getInstance(HomeActivity.this).removeShiftStart();
 
+                        //AppSharedPreferences.getInstance(HomeActivity.this).removeLoginTime();
 
 
                         registerTaxi();
@@ -5011,12 +5083,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(v);
                 dialog.setCanceledOnTouchOutside(false);
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                Window window = dialog.getWindow();
-                lp.copyFrom(window.getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                window.setAttributes(lp);
 
                 dialog_confirm.setTag((Dialog) dialog);
                 dialog_confirm.setOnClickListener(new View.OnClickListener() {
@@ -5154,12 +5220,6 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             dialog.setContentView(v);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setCancelable(false);
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            Window window = dialog.getWindow();
-            lp.copyFrom(window.getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            window.setAttributes(lp);
 
             dialog_confirm.setTag((Dialog) dialog);
             dialog_confirm.setOnClickListener(new View.OnClickListener() {
@@ -5173,7 +5233,7 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
                     aq.id(R.id.icon_reserve).visibility(View.GONE);
                     aq.id(R.id.icon_app).visibility(View.GONE);
-//                    aq.id(R.id.icon_visa).visibility(View.GONE);
+                    //aq.id(R.id.icon_visa).visibility(View.GONE);
                     aq.id(R.id.icon_thum).visibility(View.GONE);
                     aq.id(R.id.log_out).visible();
                     resetProgressState();
@@ -5301,14 +5361,14 @@ public class HomeActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                                     }
                                     if(Status.checkStatus == 2){
                                         aq.ajax(direction.getGoogleDirectionAPI(new LatLng(CurrentLocation.currentLocation.getLatitude(), CurrentLocation.currentLocation.getLongitude()), latLng_destination, GMapV2Direction.MODE_DRIVING), String.class, new AjaxCallback<String>() {                                            @Override
-                                            public void callback(String url, String data, AjaxStatus status) {
-                                                closeNavigation();
-                                                Status.enableGetDirection = true;
-                                                pantoLocation = true;
-                                                layout_destinationMarker.setVisibility(View.GONE);
-                                                getDataDirection();
-                                                checkSound = true;
-                                            }
+                                        public void callback(String url, String data, AjaxStatus status) {
+                                            closeNavigation();
+                                            Status.enableGetDirection = true;
+                                            pantoLocation = true;
+                                            layout_destinationMarker.setVisibility(View.GONE);
+                                            getDataDirection();
+                                            checkSound = true;
+                                        }
                                         });
                                     }
 

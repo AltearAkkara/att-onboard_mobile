@@ -1,42 +1,32 @@
 package com.infratrans.taxi.onboard;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.infratrans.taxi.onboard.json.JSONParser;
 import com.infratrans.taxi.onboard.shares.LoginHelper;
 import com.infratrans.taxi.onboard.util.APIs;
 import com.infratrans.taxi.onboard.util.Global;
 
-import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.HashMap;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Thanisak Piyasaksiri on 2/5/15 AD.
@@ -64,10 +54,10 @@ public class SplashActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
 //                car
-            APIs.DOMAIN = "http://192.168.0.58:8080/taxi/api/index.php/car/";
+//            APIs.DOMAIN = "http://192.168.0.58:8080/taxi/api/index.php/car/";
 
 //          TEST 480
-//          APIs.DOMAIN = "http://171.101.138.95:8080/taxi/api/index.php/car/";
+          APIs.DOMAIN = "http://171.101.138.95:8080/taxi/api/index.php/car/";
         initeFade();
     }
 

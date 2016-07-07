@@ -47,4 +47,4 @@
 		    android:summary="@string/preferences_bulk_mode_summary"/>
 	</PreferenceCategory>
 </PreferenceScreen>
-<!-- From: file:/D:/Android/AndroidStudioProjects/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/res/xml/preferences.xml --><!-- From: file:/D:/Android/AndroidStudioProjects/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/build/intermediates/bundles/debug/res/xml/preferences.xml -->
+<!-- From: file:/C:/Users/Altear/Documents/GitHub/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/res/xml/preferences.xml --><!-- From: file:/C:/Users/Altear/Documents/GitHub/att-onboard_mobile/AllThaiTaxi/QRCoderReader-Service/build/intermediates/bundles/debug/res/xml/preferences.xml -->

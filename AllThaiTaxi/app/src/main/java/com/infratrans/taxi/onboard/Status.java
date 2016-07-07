@@ -23,5 +23,8 @@ public class Status {
     public static boolean islogout = false;
     public static int checkStatus = 2;
     public static boolean checkNavi = false;
-
+    public static boolean check_btn_menu = true;
+    public static boolean check_btn_traffic = false;
+    public static boolean check_btn_network = true;
+    public static boolean check_btn_meter = true;
 }

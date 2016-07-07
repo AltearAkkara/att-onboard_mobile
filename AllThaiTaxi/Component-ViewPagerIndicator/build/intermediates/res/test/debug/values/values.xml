@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/D:/Android/AndroidStudioProjects/att-onboard_mobile/AllThaiTaxi/Component-ViewPagerIndicator/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Altear/Documents/GitHub/att-onboard_mobile/AllThaiTaxi/Component-ViewPagerIndicator/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <attr format="boolean" name="centered"/>
     <attr format="color" name="selectedColor"/>
